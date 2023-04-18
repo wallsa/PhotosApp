@@ -6,7 +6,12 @@
 //
 
 import UIKit
+import Firebase
 
+let STORAGE_REF = Storage.storage().reference()
+let STORAGE_PROFILE_IMAGES = STORAGE_REF.child("profile_images")
+
+let DATA_REF = Firebase
 
 enum AppSettings {
     

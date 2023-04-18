@@ -127,24 +127,24 @@ class LoginController:UIViewController{
     }
     
     @objc func handleLogin(){
-//        guard let email = emailTextField.text else {return}
-//        guard let password = passwordTextField.text else {return}
-//
-//        showHUD(true, with: "Loggin In")
-//
-//        AuthService.shared.logUserIn(withEmail: email, password: password) { result, error in
-//            if let error = error{
-//                self.showHUD(false)
-//                print("DEBUG: Error log in \(error.localizedDescription)")
-//                let alert = UIAlertController().createSimpleAlert(title: "Error", message: error.localizedDescription)
-//                self.present(alert, animated: true)
-//                return
-//            }
-//            print("DEBUG:Sucess Login")
-//            self.showHUD(false)
-//            guard let uid = result?.user.uid else {return}
-//            self.delegate?.authenticateComplete(forUid: uid)
-//        }
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+
+        //showHUD(true, with: "Loggin In")
+
+        AuthService.shared.logUserIn(withEmail: email, password: password) { result, error in
+            if let error = error{
+                self.showHUD(false)
+                print("DEBUG: Error log in \(error.localizedDescription)")
+                let alert = UIAlertController().createSimpleAlert(title: "Error", message: error.localizedDescription)
+                self.present(alert, animated: true)
+                return
+            }
+            print("DEBUG:Sucess Login")
+            self.showHUD(false)
+            guard let uid = result?.user.uid else {return}
+            self.delegate?.authenticateComplete(forUid: uid)
+        }
     }
     
     @objc func togglePassword(){

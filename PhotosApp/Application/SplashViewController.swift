@@ -28,11 +28,10 @@ class SplashViewController: UIViewController {
         override func viewDidLoad() {
             super.viewDidLoad()
             configure()
-            
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                     let mainViewController = LoginController()
-                     UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: mainViewController)
-                     UIApplication.shared.windows.first?.makeKeyAndVisible()
+                    let mainViewController = LoginController()
+                    UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: mainViewController)
+                    UIApplication.shared.windows.first?.makeKeyAndVisible()
                  }
         }
         

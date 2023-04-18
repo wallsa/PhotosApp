@@ -136,37 +136,37 @@ class SignupController:UIViewController{
 //MARK: - Selectors
     
     @objc func handleRegister(){
-//        guard let fullname = fullNameTextField.text else {return}
-//        guard let username = usernameTextField.text?.lowercased() else {return}
-//        guard let email = emailTextField.text else {return}
-//        guard let password = passwordTextField.text else {return}
-//        guard let image = image else {
-//            let alert = UIAlertController().createSimpleAlert(title: "Error", message: "Please select a profile image")
-//            present(alert, animated: true)
-//            return
-//        }
-//        showHUD(true, with: "Registering your user")
-//
-//        let credentials = AuthCredentials(email: email, fullname: fullname, username: username, password: password, profileImage: image)
-//
-//        AuthService.shared.registerUser(withCredentials: credentials) { databaseError in
-//            if let error = databaseError{
-//                self.showHUD(false)
-//                print("DEBUG: Error in database try again later... \(error.localizedDescription)")
-//                return
-//            }
-//        } authCompletion: { result, authError in
-//            if let error = authError{
-//                self.showHUD(false)
-//                print("DEBUG: Error in authentication try again later... \(error.localizedDescription)")
-//                return
-//            }
-//            print("DEBUG: Sucess register user")
-//            self.showHUD(false)
-//            guard let uid = result?.user.uid else {return}
-//            self.delegate?.authenticateComplete(forUid: uid)
+        guard let fullname = fullNameTextField.text else {return}
+        guard let username = usernameTextField.text?.lowercased() else {return}
+        guard let email = emailTextField.text else {return}
+        guard let password = passwordTextField.text else {return}
+        guard let image = image else {
+            let alert = UIAlertController().createSimpleAlert(title: "Error", message: "Please select a profile image")
+            present(alert, animated: true)
+            return
         }
-       
+        //showHUD(true, with: "Registering your user")
+        
+        let credentials = AuthCredentials(email: email, fullname: fullname, username: username, password: password, profileImage: image)
+        
+        AuthService.registerUser(withCredentials: credentials) { databaseError in
+            if let error = databaseError{
+                //self.showHUD(false)
+                print("DEBUG: Error in database try again later... \(error.localizedDescription)")
+                return
+            }
+        } authCompletion: { result, authError in
+            if let error = authError{
+                //self.showHUD(false)
+                print("DEBUG: Error in authentication try again later... \(error.localizedDescription)")
+                return
+            }
+            print("DEBUG: Sucess register user")
+            self.showHUD(false)
+            guard let uid = result?.user.uid else {return}
+            self.delegate?.authenticateComplete(forUid: uid)
+        }
+    }
     
     @objc func handleAlreadyHaveAccount(){
         navigationController?.popViewController(animated: true)
