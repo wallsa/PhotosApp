@@ -7,15 +7,19 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 
 typealias fireCompletion = (AuthDataResult?, Error?) -> ()
+typealias databaseCompletion = (Error?, DatabaseReference?) -> ()
+
+
 
 struct AuthService{
     static func loginUser(withEmail email:String, password:String, completion:@escaping fireCompletion){
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }
     
-    static func registerUser(withCredentials credentials:AuthCredentials){
+    static func registerUser(withCredentials credentials:AuthCredentials, authCompletion:@escaping(fireCompletion), dataBaseCompletion:@escaping(databaseCompletion)){
         let email = credentials.email
         let fullname = credentials.fullname
         let password = credentials.password
@@ -28,23 +32,29 @@ struct AuthService{
         guard let imageData = profileImage.jpegData(compressionQuality: 0.3) else {return}
         
         Auth.auth().createUser(withEmail: email, password: password) { result , error in
-            if let error = error{
+            if let error = error {
                 authCompletion(result, error)
-                return
-        }
-            
-        imageStorageRef.putData(imageData, metadata: nil) { meta , error  in
-            imageStorageRef.downloadURL { url , error in
-                guard let profileImageUrl = url?.absoluteString else {return}
-                    
+            }
+            print("DEBUG: SUCESS CREATE USER")
+            guard let uid = result?.user.uid else {return}
+            print("DEBUG: THE USER IS \(uid)")
+
+            imageStorageRef.putData(imageData, metadata: nil) { meta , error  in
+                imageStorageRef.downloadURL { url , error in
+                    if let error = error {
+                        print("DEBUG: ERROR IN STORAGE \(error.localizedDescription)")
+                    }
+                    guard let profileImageUrl = url?.absoluteString else {return}
+                    print("DEBUG: PROFILE IMAGE URL \(profileImageUrl)")
+
                     guard let uid = result?.user.uid else {return}
                     let values = ["email" : email, "username" : username, "fullname" : fullname, "uid" : uid, "profileImageUrl" : profileImageUrl] as [String:Any]
                     
+                    USERS_REF.child(uid).setValue(values, withCompletionBlock: dataBaseCompletion)
                     
-                    REF_USERS.document(uid).setData(values, completion: databaseCompletion)
-                    }
                 }
             }
         }
+    }
     
 }

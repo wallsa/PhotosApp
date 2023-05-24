@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 
 class SignupController:UIViewController{
@@ -61,7 +62,7 @@ class SignupController:UIViewController{
     private let eyeButton : UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: AppSettings.Images.eye), for: .normal)
-        button.tintColor = .mainPurple
+        button.tintColor = .lightPurple
         button.addTarget(self , action: #selector(togglePassword), for: .touchUpInside)
         button.setDimensions(height: 30, width: 30)
         return button
@@ -106,26 +107,26 @@ class SignupController:UIViewController{
         
         view.addSubview(profilePhotoView)
         profilePhotoView.centerX(inview: view)
-        profilePhotoView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 20, width: 120, height: 120)
+        profilePhotoView.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: AppSettings.Layout.bigSpacing, width: 120, height: 120)
         profilePhotoView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleSelectPhoto)))
         
         view.addSubview(fullnameContainer)
-        fullnameContainer.anchor(top: profilePhotoView.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 24, paddingLeft: 24, paddingRight: 24, height: 50)
+        fullnameContainer.anchor(top: profilePhotoView.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: AppSettings.Layout.bigSpacing, paddingLeft: AppSettings.Layout.bigSpacing, paddingRight: AppSettings.Layout.bigSpacing, height: 50)
         
         view.addSubview(usernameContainer)
-        usernameContainer.anchor(top: fullnameContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 8, paddingLeft: 24, paddingRight: 24, height: 50)
+        usernameContainer.anchor(top: fullnameContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: AppSettings.Layout.defaultSpacing, paddingLeft: AppSettings.Layout.bigSpacing, paddingRight: AppSettings.Layout.bigSpacing, height: 50)
 
         view.addSubview(emailContainer)
-        emailContainer.anchor(top: usernameContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 8, paddingLeft: 24, paddingRight: 24, height: 50)
+        emailContainer.anchor(top: usernameContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: AppSettings.Layout.defaultSpacing, paddingLeft: AppSettings.Layout.bigSpacing, paddingRight: AppSettings.Layout.bigSpacing, height: 50)
 
         view.addSubview(passwordContainer)
-        passwordContainer.anchor(top: emailContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 8, paddingLeft: 24, paddingRight: 24, height: 50)
+        passwordContainer.anchor(top: emailContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: AppSettings.Layout.defaultSpacing, paddingLeft: AppSettings.Layout.bigSpacing, paddingRight: AppSettings.Layout.bigSpacing, height: 50)
 
         view.addSubview(signupButton)
-        signupButton.anchor(top: passwordContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 24, paddingRight: 24, height: 50)
+        signupButton.anchor(top: passwordContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: AppSettings.Layout.mediumSpacing, paddingLeft: AppSettings.Layout.bigSpacing, paddingRight: AppSettings.Layout.bigSpacing, height: 50)
 
         view.addSubview(alreadyHaveAccountButton)
-        alreadyHaveAccountButton.anchor(left: view.safeAreaLayoutGuide.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingBottom: 8)
+        alreadyHaveAccountButton.anchor(left: view.safeAreaLayoutGuide.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingBottom: AppSettings.Layout.defaultSpacing)
         
         fullNameTextField.addTarget(self , action: #selector(signupFormChange), for: .editingChanged)
         usernameTextField.addTarget(self , action: #selector(signupFormChange), for: .editingChanged)
@@ -149,22 +150,18 @@ class SignupController:UIViewController{
         
         let credentials = AuthCredentials(email: email, fullname: fullname, username: username, password: password, profileImage: image)
         
-        AuthService.registerUser(withCredentials: credentials) { databaseError in
-            if let error = databaseError{
-                //self.showHUD(false)
-                print("DEBUG: Error in database try again later... \(error.localizedDescription)")
+        AuthService.registerUser(withCredentials: credentials) { result , authError  in
+            if let authError = authError{
+                let alert = UIAlertController().createSimpleAlert(title: "Error", message: authError.localizedDescription)
+                self.present(alert, animated: true)
                 return
             }
-        } authCompletion: { result, authError in
-            if let error = authError{
-                //self.showHUD(false)
-                print("DEBUG: Error in authentication try again later... \(error.localizedDescription)")
+        } dataBaseCompletion: { error , databaseReference in
+            if let databaseError = error {
+                let alert = UIAlertController().createSimpleAlert(title: "Error", message: databaseError.localizedDescription)
+                self.present(alert, animated: true)
                 return
             }
-            print("DEBUG: Sucess register user")
-            self.showHUD(false)
-            guard let uid = result?.user.uid else {return}
-            self.delegate?.authenticateComplete(forUid: uid)
         }
     }
     

@@ -99,18 +99,18 @@ class LoginController:UIViewController{
         
         view.addSubview(logoImage)
         logoImage.centerX(inview: view)
-        logoImage.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: 32, width: 150, height: 150)
+        logoImage.anchor(top: view.safeAreaLayoutGuide.topAnchor, paddingTop: AppSettings.Layout.extraBigSpacing, width: 150, height: 150)
         
         view.addSubview(emailContainer)
-        emailContainer.anchor(top: logoImage.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 50, paddingLeft: 24, paddingRight: 24, height: 50)
+        emailContainer.anchor(top: logoImage.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 50, paddingLeft: AppSettings.Layout.bigSpacing, paddingRight: AppSettings.Layout.bigSpacing, height: 50)
         view.addSubview(passwordContainer)
-        passwordContainer.anchor(top: emailContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 8, paddingLeft: 24, paddingRight: 24, height: 50)
+        passwordContainer.anchor(top: emailContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: AppSettings.Layout.defaultSpacing, paddingLeft: AppSettings.Layout.bigSpacing, paddingRight: AppSettings.Layout.bigSpacing, height: 50)
         
         view.addSubview(loginButton)
-        loginButton.anchor(top: passwordContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: 16, paddingLeft: 24, paddingRight: 24, height: 50)
+        loginButton.anchor(top: passwordContainer.bottomAnchor, left: view.safeAreaLayoutGuide.leftAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingTop: AppSettings.Layout.mediumSpacing, paddingLeft: AppSettings.Layout.bigSpacing, paddingRight: AppSettings.Layout.bigSpacing, height: 50)
         
         view.addSubview(dontHaveAccountButton)
-        dontHaveAccountButton.anchor(left: view.safeAreaLayoutGuide.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingBottom: 8)
+        dontHaveAccountButton.anchor(left: view.safeAreaLayoutGuide.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.safeAreaLayoutGuide.rightAnchor, paddingBottom: AppSettings.Layout.defaultSpacing)
         
         emailTextField.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
         passwordTextField.addTarget(self, action: #selector(handleTextChange), for: .editingChanged)
@@ -130,9 +130,9 @@ class LoginController:UIViewController{
         guard let email = emailTextField.text else {return}
         guard let password = passwordTextField.text else {return}
 
-        //showHUD(true, with: "Loggin In")
+        showHUD(true, with: "Loggin In")
 
-        AuthService.shared.logUserIn(withEmail: email, password: password) { result, error in
+        AuthService.loginUser(withEmail: email, password: password) { result, error in
             if let error = error{
                 self.showHUD(false)
                 print("DEBUG: Error log in \(error.localizedDescription)")

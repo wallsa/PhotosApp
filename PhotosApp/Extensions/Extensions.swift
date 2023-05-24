@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 //MARK: - UIView
 
@@ -51,6 +52,7 @@ extension UITextField {
         textField.borderStyle = .none
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.textColor = .white
+       
         textField.isSecureTextEntry = isSecure
         textField.keyboardType = keyboardType
         textField.keyboardAppearance = .dark
@@ -84,6 +86,15 @@ extension UIViewController{
         gradient.frame = view.frame
     }
     
+    
+    static let HUD = JGProgressHUD(style: .dark)
+    
+    func showHUD(_ show:Bool ,with text: String? = "Loading") {
+        view.endEditing(true)
+        UIViewController.HUD.textLabel.text = text
+        
+        show ? UIViewController.HUD.show(in: view) : UIViewController.HUD.dismiss()
+    }
 
     
     

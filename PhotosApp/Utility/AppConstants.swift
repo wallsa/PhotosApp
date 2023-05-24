@@ -8,18 +8,21 @@
 import UIKit
 import Firebase
 
+
 let STORAGE_REF = Storage.storage().reference()
 let STORAGE_PROFILE_IMAGES = STORAGE_REF.child("profile_images")
 
-let DATA_REF = Firebase
+let DATA_REF = Database.database().reference()
+let USERS_REF = DATA_REF.child("users")
 
 enum AppSettings {
     
     enum Layout {
-        static let smallSpacing: Int   = defaultSpacing / 2
-        static let defaultSpacing: Int = 8
-        static let mediumSpacing: Int  = defaultSpacing * 2
-        static let bigSpacing: Int     = defaultSpacing * 3
+        static let smallSpacing: CGFloat   = defaultSpacing / 2
+        static let defaultSpacing: CGFloat = 8
+        static let mediumSpacing: CGFloat  = defaultSpacing * 2 //16
+        static let bigSpacing: CGFloat     = defaultSpacing * 3 //24
+        static let extraBigSpacing: CGFloat     = defaultSpacing * 4 //32
     }
     
     enum Images{
@@ -32,6 +35,19 @@ enum AppSettings {
         static let person = "person"
         static let personAdd = "person.crop.circle"
         static let plus = "plus"
+    }
+    
+    enum TabBarImages{
+        static let home = "house"
+        static let homeSelected = "house.fill"
+        static let search = "magnifyingglass"
+        static let searchSelected = "magnifyingglass.circle.fill"
+        static let upload = "plus.app"
+        static let uploadSelected = "plus.app.fill"
+        static let notifications = "heart"
+        static let notificationsSelected = "heart.fill"
+        static let profile = "person"
+        static let profileSelected = "person.fill"
     }
     
 }
