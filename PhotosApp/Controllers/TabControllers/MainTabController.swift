@@ -11,8 +11,20 @@ import Firebase
 class MainTabController:UITabBarController{
     
 //MARK: - Properties
+    
+    private var user:User
 
 //MARK: - Lifecycle
+    
+    init(user: User) {
+        self.user = user
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkUser()
@@ -22,9 +34,9 @@ class MainTabController:UITabBarController{
 
 //MARK: - API
     func fetchUser(_ uid: String) {
-        print("DEBUG: USER UID IS \(uid)")
         UserService.fetchUser(forUID: uid) { user in
             print("DEBUG: USER IS \(user)")
+            self.user = user
         }
     }
     
@@ -61,26 +73,13 @@ class MainTabController:UITabBarController{
     }
     
     func configureViewControllers(){
-        let homeController = templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.home), rootViewController:  HomeViewController(collectionViewLayout: UICollectionViewFlowLayout()))
-        let searchController = templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.search), rootViewController: SearchController())
-        let postController = templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.upload), rootViewController: PostController())
-        let notificationController = templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.notifications), rootViewController: NotificationsController())
-        let profileController = templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.profile), rootViewController: ProfileController(collectionViewLayout: UICollectionViewFlowLayout()))
+        let homeController = UINavigationController().templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.home), rootViewController:  HomeViewController(user: user))
+        let searchController = UINavigationController().templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.search), rootViewController: SearchController())
+        let postController = UINavigationController().templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.upload), rootViewController: PostController())
+        let notificationController = UINavigationController().templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.notifications), rootViewController: NotificationsController())
+        let profileController = UINavigationController().templateNavController(image: UIImage(systemName: AppSettings.TabBarImages.profile), rootViewController: ProfileController(user: user))
         
         viewControllers = [homeController, searchController, postController, notificationController, profileController]
-        tabBar.barTintColor = .black
-    }
-    
-    
-    func templateNavController(image: UIImage? = nil, rootViewController: UIViewController) -> UINavigationController {
-        let nav = UINavigationController(rootViewController: rootViewController)
-        nav.tabBarItem.image = image
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .white
-        nav.navigationBar.standardAppearance = appearance
-        nav.navigationBar.scrollEdgeAppearance = nav.navigationBar.standardAppearance
-        return nav
     }
     
     func configureTabBarAppearance() {
@@ -89,20 +88,14 @@ class MainTabController:UITabBarController{
             appearance.configureWithOpaqueBackground()
             appearance.backgroundColor = .white
             tabBar.standardAppearance = appearance
-            tabBar.tintColor = .black
+            tabBar.tintColor = .darkPurple
             tabBar.scrollEdgeAppearance = appearance
         }
     }
-    
-
-//MARK: - Selectors
-    
 }
-
+//MARK: - Authentication Login Delegate
 extension MainTabController:AuthenticationDelegate{
     func authenticateComplete(forUid uid: String) {
         print("the user login has this UID \(uid)")
     }
-    
-    
 }

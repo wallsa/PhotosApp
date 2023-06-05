@@ -18,6 +18,7 @@ class SignupController:UIViewController{
     weak var delegate:AuthenticationDelegate?
     
     private var signupViewModel = SignupViewModel()
+    private var loginController = LoginController()
     
     private let profilePhotoView : UIImageView = {
         let view = UIImageView()
@@ -94,6 +95,7 @@ class SignupController:UIViewController{
     override func viewDidLoad() {
         configure()
         setImagePickerDelegates()
+        loginController.delegate = delegate
     }
 
 //MARK: - API
@@ -146,8 +148,8 @@ class SignupController:UIViewController{
             present(alert, animated: true)
             return
         }
-        //showHUD(true, with: "Registering your user")
-        
+        showHUD(true, with: "Registering your user")
+        var userUID:String?
         let credentials = AuthCredentials(email: email, fullname: fullname, username: username, password: password, profileImage: image)
         
         AuthService.registerUser(withCredentials: credentials) { result , authError  in
@@ -156,14 +158,17 @@ class SignupController:UIViewController{
                 self.present(alert, animated: true)
                 return
             }
-        } dataBaseCompletion: { error , databaseReference in
-            if let databaseError = error {
-                let alert = UIAlertController().createSimpleAlert(title: "Error", message: databaseError.localizedDescription)
-                self.present(alert, animated: true)
-                return
-            }
+            
+        } uidCompletion: { uid in
+            self.showHUD(false)
+            self.delegate?.authenticateComplete(forUid: uid)
         }
-    }
+            
+            
+        }
+        
+        
+    
     
     @objc func handleAlreadyHaveAccount(){
         navigationController?.popViewController(animated: true)
@@ -207,10 +212,8 @@ extension SignupController : UIImagePickerControllerDelegate & UINavigationContr
         profilePhotoView.layer.borderColor = UIColor.white.cgColor
         profilePhotoView.layer.borderWidth = 3
         profilePhotoView.layer.cornerRadius = 120 / 2
-
         profilePhotoView.image = profileImage
 
-        
         dismiss(animated: true)
     }
 }

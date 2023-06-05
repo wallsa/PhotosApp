@@ -23,6 +23,8 @@
 		E120F1D529D24C35004DF9C6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E120F1D429D24C35004DF9C6 /* GoogleService-Info.plist */; };
 		E120F1D829D250A2004DF9C6 /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E120F1D729D250A2004DF9C6 /* AuthService.swift */; };
 		E120F1DA29D250F4004DF9C6 /* AuthCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = E120F1D929D250F4004DF9C6 /* AuthCredentials.swift */; };
+		E12E46012A295FE900BA8B1F /* ProfileFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12E46002A295FE800BA8B1F /* ProfileFilterHeaderView.swift */; };
+		E12E46032A29645C00BA8B1F /* ProfileFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12E46022A29645C00BA8B1F /* ProfileFilterCell.swift */; };
 		E1D652C02A1D933100E3A283 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652BF2A1D933100E3A283 /* MainTabController.swift */; };
 		E1D652C22A1EB8B200E3A283 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652C12A1EB8B200E3A283 /* UserService.swift */; };
 		E1D652C42A1EB9DE00E3A283 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652C32A1EB9DE00E3A283 /* User.swift */; };
@@ -31,6 +33,9 @@
 		E1D652CB2A1EC4F500E3A283 /* PostController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652CA2A1EC4F500E3A283 /* PostController.swift */; };
 		E1D652CD2A1EC50900E3A283 /* NotificationsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652CC2A1EC50900E3A283 /* NotificationsController.swift */; };
 		E1D652CF2A1EC52600E3A283 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652CE2A1EC52600E3A283 /* ProfileController.swift */; };
+		E1D652D22A1EDB7B00E3A283 /* SideMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652D12A1EDB7B00E3A283 /* SideMenuController.swift */; };
+		E1D652D42A200A9600E3A283 /* SideMenuViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652D32A200A9600E3A283 /* SideMenuViewHeader.swift */; };
+		E1D652D62A2572C800E3A283 /* ProfileControllerHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652D52A2572C800E3A283 /* ProfileControllerHeader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +59,8 @@
 		E120F1D429D24C35004DF9C6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E120F1D729D250A2004DF9C6 /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		E120F1D929D250F4004DF9C6 /* AuthCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCredentials.swift; sourceTree = "<group>"; };
+		E12E46002A295FE800BA8B1F /* ProfileFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterHeaderView.swift; sourceTree = "<group>"; };
+		E12E46022A29645C00BA8B1F /* ProfileFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterCell.swift; sourceTree = "<group>"; };
 		E1D652BF2A1D933100E3A283 /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		E1D652C12A1EB8B200E3A283 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		E1D652C32A1EB9DE00E3A283 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -62,6 +69,9 @@
 		E1D652CA2A1EC4F500E3A283 /* PostController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostController.swift; sourceTree = "<group>"; };
 		E1D652CC2A1EC50900E3A283 /* NotificationsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsController.swift; sourceTree = "<group>"; };
 		E1D652CE2A1EC52600E3A283 /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		E1D652D12A1EDB7B00E3A283 /* SideMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuController.swift; sourceTree = "<group>"; };
+		E1D652D32A200A9600E3A283 /* SideMenuViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewHeader.swift; sourceTree = "<group>"; };
+		E1D652D52A2572C800E3A283 /* ProfileControllerHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileControllerHeader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +141,7 @@
 		E120F1BA29CB38FC004DF9C6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E1D652D02A1EDB6300E3A283 /* SideMenu */,
 				E1D652C52A1EBF8E00E3A283 /* TabControllers */,
 				E120F1D129CB9CB4004DF9C6 /* Authentication */,
 			);
@@ -148,6 +159,10 @@
 		E120F1BC29CB3900004DF9C6 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E1D652D32A200A9600E3A283 /* SideMenuViewHeader.swift */,
+				E1D652D52A2572C800E3A283 /* ProfileControllerHeader.swift */,
+				E12E46002A295FE800BA8B1F /* ProfileFilterHeaderView.swift */,
+				E12E46022A29645C00BA8B1F /* ProfileFilterCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -228,6 +243,14 @@
 				E1D652CE2A1EC52600E3A283 /* ProfileController.swift */,
 			);
 			path = TabControllers;
+			sourceTree = "<group>";
+		};
+		E1D652D02A1EDB6300E3A283 /* SideMenu */ = {
+			isa = PBXGroup;
+			children = (
+				E1D652D12A1EDB7B00E3A283 /* SideMenuController.swift */,
+			);
+			path = SideMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -345,6 +368,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E1D652CB2A1EC4F500E3A283 /* PostController.swift in Sources */,
+				E12E46012A295FE900BA8B1F /* ProfileFilterHeaderView.swift in Sources */,
+				E1D652D22A1EDB7B00E3A283 /* SideMenuController.swift in Sources */,
 				E120F1C329CB3A61004DF9C6 /* Constraints.swift in Sources */,
 				E1D652CD2A1EC50900E3A283 /* NotificationsController.swift in Sources */,
 				E120F1C729CB3A9A004DF9C6 /* Extensions.swift in Sources */,
@@ -357,6 +382,9 @@
 				E120F1D029CB9CB0004DF9C6 /* SignupController.swift in Sources */,
 				E120F1DA29D250F4004DF9C6 /* AuthCredentials.swift in Sources */,
 				E120F1A729CB38CF004DF9C6 /* AppDelegate.swift in Sources */,
+				E12E46032A29645C00BA8B1F /* ProfileFilterCell.swift in Sources */,
+				E1D652D62A2572C800E3A283 /* ProfileControllerHeader.swift in Sources */,
+				E1D652D42A200A9600E3A283 /* SideMenuViewHeader.swift in Sources */,
 				E120F1D329CBAD58004DF9C6 /* SignupViewModel.swift in Sources */,
 				E1D652CF2A1EC52600E3A283 /* ProfileController.swift in Sources */,
 				E120F1CC29CB6553004DF9C6 /* LoginController.swift in Sources */,

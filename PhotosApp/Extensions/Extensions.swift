@@ -72,6 +72,12 @@ extension NSAttributedString{
         return title
     }
     
+    func attributedTextForPostsAndFollowers(withNumber number:String, andText text:String) -> NSAttributedString{
+        let number = NSMutableAttributedString(string: "\(number)\n", attributes: [.font:UIFont.boldSystemFont(ofSize: 14)])
+        number.append(NSAttributedString(string: text, attributes: [.font:UIFont.systemFont(ofSize: 14), .foregroundColor: UIColor.lightGray]))
+        return number
+    }
+    
 }
 //MARK: - View Controller
 
@@ -96,21 +102,33 @@ extension UIViewController{
         show ? UIViewController.HUD.show(in: view) : UIViewController.HUD.dismiss()
     }
 
-    
-    
+
     func configureNavigationBar(withTitle title:String, color:UIColor, largeTitle:Bool){
         let appearance = UINavigationBarAppearance()
         appearance.largeTitleTextAttributes = [.foregroundColor : UIColor.white]
         appearance.configureWithOpaqueBackground()
-        
         appearance.backgroundColor = color
         navigationItem.title = title
         navigationController?.navigationBar.prefersLargeTitles = largeTitle
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.compactAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        
         navigationController?.navigationBar.overrideUserInterfaceStyle = .dark
+    }
+}
+
+//MARK: - Navigation Controller
+
+extension UINavigationController{
+    func templateNavController(image: UIImage? = nil, rootViewController: UIViewController, backGrounColor color: UIColor = .white) -> UINavigationController {
+        let nav = UINavigationController(rootViewController: rootViewController)
+        nav.tabBarItem.image = image
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = color
+        nav.navigationBar.standardAppearance = appearance
+        nav.navigationBar.scrollEdgeAppearance = nav.navigationBar.standardAppearance
+        return nav
     }
 }
 
@@ -128,6 +146,36 @@ extension UIAlertController {
         alert.addAction(UIAlertAction(title: "Log Out", style: .destructive, handler: completion))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         return alert
+    }
+}
+
+//MARK: - UIImageView - Cache Ideia
+
+var imageCache = [String:UIImage]()
+
+extension UIImageView{
+    func loadImage(withUrl url:String){
+//Primeiro checamos se a imagem desejada ja existe dentro do nosso cache, caso confirmado, carregamos a imagem do cache
+        if let cachedImage = imageCache[url]{
+            self.image = cachedImage
+            return
+        }
+//Alcancamos a imagem atraves de seu URL, criamos a imagem a partir dos dados retornados do URL, armazenamos seu URL e Image no cache e definimos
+        guard let url = URL(string: url) else {return}
+        
+        URLSession.shared.dataTask(with: url) { data , response , error in
+            if let error = error {
+                print("DEBUG: Error loading image in cache with \(error.localizedDescription)")
+            }
+            
+            guard let imageData = data else {return}
+            let image = UIImage(data: imageData)
+            imageCache[url.absoluteString] = image
+            DispatchQueue.main.async {
+                self.image = image
+            }
+            
+        }.resume()
     }
 }
 

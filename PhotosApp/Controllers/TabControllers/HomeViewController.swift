@@ -6,83 +6,111 @@
 //
 
 import UIKit
+import SideMenu
+import Firebase
 
 private let reuseIdentifier = "Cell"
 
 class HomeViewController: UICollectionViewController {
 
+//MARK: - Properties
+    
+    private var user:User{
+        didSet{
+            print(user)
+        }
+    }
+    
+//MARK: - Lifecycle
+    
+    init(user: User) {
+        self.user = user
+        super.init(collectionViewLayout: UICollectionViewFlowLayout())
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        collectionView.backgroundColor = .yellow
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Register cell classes
-        self.collectionView!.register(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-
-        // Do any additional setup after loading the view.
+        configureNaviBar()
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
     
-        // Configure the cell
+//MARK: - API
     
-        return cell
+    func fetchUser(_ uid: String){
+        UserService.fetchUser(forUID: uid) { user in
+            print("DEBUG: USER IS \(user)")
+            self.user = user
+        }
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    func logoutUser(){
+        do {
+            try Auth.auth().signOut()
+            presentLoginScreen()
+        } catch let error {
+            print("DEBUG: Failed to signOut with error ... \(error.localizedDescription)")
+        }
     }
-    */
+    
+//MARK: - Helper Functions
+    
+    func configureNaviBar(){
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.squares.left"), style: .done, target: self, action: #selector(handleSidemenu))
+        navigationItem.title = "Teste"
+        navigationController?.navigationBar.tintColor = .darkPurple
+    }
 
+    func presentLoginScreen(){
+        DispatchQueue.main.async {
+            let controller = LoginController()
+            controller.delegate = self
+            let nav = UINavigationController(rootViewController: controller)
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true)
+        }
+    }
+    
+//MARK: - Selectors
+    
+    @objc func handleSidemenu(){
+        let sideMenu = SideMenuController(user: user)
+        let menu = SideMenuNavigationController(rootViewController: sideMenu)
+        menu.leftSide = true
+        sideMenu.delegate = self
+        menu.presentationStyle = .viewSlideOutMenuIn
+        present(menu, animated: true)
+    }
 }
+
+//MARK: - Log In / Sign In Authenticate
+
+extension HomeViewController:AuthenticationDelegate{
+    func authenticateComplete(forUid uid: String) {
+        print("DEBUG: AUTHENTICATE COMPLETE")
+        dismiss(animated: true)
+        fetchUser(uid)
+    }
+}
+
+//MARK: - SideMenuDelegate
+
+extension HomeViewController:SideMenuDelegate{
+    func sideMenuOptionPressed(_ option: SideMenuOptions) {
+        dismiss(animated: true)
+        switch option{
+        case .options:
+            print("DEBUG: ProfileOptions Pressed")
+        case .loggout:
+            print("DEBUG: Loggout Pressed")
+            let alert = UIAlertController().createLogoutAlert { loggout in
+                self.logoutUser()
+            }
+            present(alert, animated: true)
+        }
+    }
+}
+
+

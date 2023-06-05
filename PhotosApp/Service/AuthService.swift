@@ -19,7 +19,7 @@ struct AuthService{
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }
     
-    static func registerUser(withCredentials credentials:AuthCredentials, authCompletion:@escaping(fireCompletion), dataBaseCompletion:@escaping(databaseCompletion)){
+    static func registerUser(withCredentials credentials:AuthCredentials, authCompletion:@escaping(fireCompletion), uidCompletion:@escaping(String) -> ()){
         let email = credentials.email
         let fullname = credentials.fullname
         let password = credentials.password
@@ -36,8 +36,6 @@ struct AuthService{
                 authCompletion(result, error)
             }
             print("DEBUG: SUCESS CREATE USER")
-            guard let uid = result?.user.uid else {return}
-            print("DEBUG: THE USER IS \(uid)")
 
             imageStorageRef.putData(imageData, metadata: nil) { meta , error  in
                 imageStorageRef.downloadURL { url , error in
@@ -45,13 +43,12 @@ struct AuthService{
                         print("DEBUG: ERROR IN STORAGE \(error.localizedDescription)")
                     }
                     guard let profileImageUrl = url?.absoluteString else {return}
-                    print("DEBUG: PROFILE IMAGE URL \(profileImageUrl)")
 
                     guard let uid = result?.user.uid else {return}
                     let values = ["email" : email, "username" : username, "fullname" : fullname, "uid" : uid, "profileImageUrl" : profileImageUrl] as [String:Any]
                     
-                    USERS_REF.child(uid).setValue(values, withCompletionBlock: dataBaseCompletion)
-                    
+                    USERS_REF.child(uid).setValue(values)
+                    uidCompletion(uid)
                 }
             }
         }

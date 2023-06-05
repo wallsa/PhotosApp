@@ -6,47 +6,82 @@
 //
 
 import UIKit
+import Firebase
 
 class SplashViewController: UIViewController {
-    //MARK: - Properties
+//MARK: - Properties
+    
+    private var user:User?{
+        didSet{
+            configureMainTab()
+        }
+    }
         
-        private let centralLogo: UIImageView = {
+    private let centralLogo: UIImageView = {
             let imageView = UIImageView()
             imageView.image = UIImage(systemName: "camera.fill")
             imageView.contentMode = .scaleAspectFill
             imageView.tintColor = .white
             imageView.setDimensions(height: 200, width: 200)
             return imageView
-        }()
+    }()
       
-    //MARK: - Lyfe Cycle
+//MARK: - Lyfe Cycle
         
-        override var prefersStatusBarHidden: Bool{
-            return true
+    override var prefersStatusBarHidden: Bool{
+        return true
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        configure()
+        checkUser()
+    }
+
+//MARK: - API
+    
+    func fetchUser(_ uid: String){
+        UserService.fetchUser(forUID: uid) { user in
+            print("DEBUG: USER IS \(user)")
+            self.user = user
         }
+    }
         
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            configure()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {1
-                    let mainViewController = MainTabController()
-                    UIApplication.shared.windows.first?.rootViewController = UINavigationController(rootViewController: mainViewController)
-                    UIApplication.shared.windows.first?.makeKeyAndVisible()
-                 }
+   
+//MARK: - Helpers
+        
+    fileprivate func configure(){
+        configureGradientLayer(colorOne: .darkPurple, colorTwo: .lightPurple)
+        view.addSubview(centralLogo)
+        centralLogo.centerX(inview: view)
+        centralLogo.centerY(inview: view)
+    }
+    
+    fileprivate func configureMainTab() {
+        guard let user = user else {return}
+        let mainViewController = MainTabController(user: user)
+        UIApplication.shared.windows.first?.rootViewController = mainViewController
+        UIApplication.shared.windows.first?.makeKeyAndVisible()
+    }
+    
+    func checkUser(){
+        if Auth.auth().currentUser?.uid == nil {
+            print("DEBUG: User not connected, show loginCOntroller")
+            presentLoginScreen()
+        } else {
+            guard let uid = Auth.auth().currentUser?.uid else {return}
+            fetchUser(uid)
         }
-        
-       
-        
-    //MARK: - Helpers
-        
-        fileprivate func configure(){
-            configureGradientLayer(colorOne: .darkPurple, colorTwo: .lightPurple)
-            view.addSubview(centralLogo)
-            centralLogo.centerX(inview: view)
-            centralLogo.centerY(inview: view)
-            
-            
+    }
+    
+    func presentLoginScreen(){
+        DispatchQueue.main.async {
+            let controller = LoginController()
+            let nav = UINavigationController(rootViewController: controller)
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true)
         }
+    }
    
 
 }
