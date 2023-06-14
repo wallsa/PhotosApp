@@ -9,7 +9,7 @@ import UIKit
 import SideMenu
 import Firebase
 
-private let reuseIdentifier = "Cell"
+fileprivate let reuseIdentifier = "Cell"
 
 class HomeViewController: UICollectionViewController {
 
@@ -17,6 +17,7 @@ class HomeViewController: UICollectionViewController {
     
     private var user:User{
         didSet{
+//FIXME: - Implementar para que o usuario seja atualizado em todo o app
             print(user)
         }
     }
@@ -59,7 +60,7 @@ class HomeViewController: UICollectionViewController {
     
     func configureNaviBar(){
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "sidebar.squares.left"), style: .done, target: self, action: #selector(handleSidemenu))
-        navigationItem.title = "Teste"
+        navigationItem.title = "Home"
         navigationController?.navigationBar.tintColor = .darkPurple
     }
 

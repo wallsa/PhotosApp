@@ -11,7 +11,7 @@ protocol ProfileFilterHeaderViewDelegate:AnyObject{
     func selectFilter(at index:IndexPath)
 }
 
-private let reuseIdentifier = "ProfilefilterCell"
+fileprivate let reuseIdentifier = "ProfilefilterCell"
 
 enum ProfileFilterOptions:Int,CustomStringConvertible, CaseIterable {
     case grid

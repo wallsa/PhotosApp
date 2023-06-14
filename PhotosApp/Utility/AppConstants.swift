@@ -14,6 +14,8 @@ let STORAGE_PROFILE_IMAGES = STORAGE_REF.child("profile_images")
 
 let DATA_REF = Database.database().reference()
 let USERS_REF = DATA_REF.child("users")
+let USERS_FOLLOWING = DATA_REF.child("user-following")
+let USERS_FOLLOWERS = DATA_REF.child("user-followers")
 
 enum AppSettings {
     

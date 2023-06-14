@@ -7,6 +7,20 @@
 
 import UIKit
 
+enum ProfileHeadeActionButtonConfig{
+    case followAndUnfollow
+    case editProfile
+    
+    init(){
+        self = .followAndUnfollow
+    }
+}
+
+protocol ProfileHeaderDelegate:AnyObject{
+    func followOrUnfollowPressed()
+    func editProfilePressed()
+}
+
 class ProfileControllerHeader:UICollectionReusableView{
     
 //MARK: - Properties
@@ -17,7 +31,9 @@ class ProfileControllerHeader:UICollectionReusableView{
         }
     }
     
+    weak var delegate:ProfileHeaderDelegate?
     private let filterBar = ProfileFilterHeaderView()
+    var actionButtonConfiguration = ProfileHeadeActionButtonConfig()
     
     private let userImageView:UIImageView = {
         let imageView = UIImageView()
@@ -63,7 +79,7 @@ class ProfileControllerHeader:UICollectionReusableView{
         return label
     }()
     
-    private let editProfileButton : UIButton = {
+    private let followOrEditProfileButton : UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Edit Profile", for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -100,12 +116,12 @@ class ProfileControllerHeader:UICollectionReusableView{
         addSubview(stack)
         stack.anchor(top: topAnchor, left: userImageView.rightAnchor, right: rightAnchor, paddingTop: AppSettings.Layout.defaultSpacing, paddingLeft: AppSettings.Layout.mediumSpacing, paddingRight: AppSettings.Layout.mediumSpacing, height: 50)
         
-        addSubview(editProfileButton)
-        editProfileButton.anchor(top: stack.bottomAnchor, left: stack.leftAnchor, right: rightAnchor, paddingTop: AppSettings.Layout.defaultSpacing,
+        addSubview(followOrEditProfileButton)
+        followOrEditProfileButton.anchor(top: stack.bottomAnchor, left: stack.leftAnchor, right: rightAnchor, paddingTop: AppSettings.Layout.defaultSpacing,
                                  paddingLeft: AppSettings.Layout.defaultSpacing, paddingRight: AppSettings.Layout.mediumSpacing, height: 30)
         
         addSubview(userFullnameLabel)
-        userFullnameLabel.anchor(top: editProfileButton.bottomAnchor, left: leftAnchor, paddingTop: AppSettings.Layout.defaultSpacing, paddingLeft: AppSettings.Layout.defaultSpacing)
+        userFullnameLabel.anchor(top: followOrEditProfileButton.bottomAnchor, left: leftAnchor, paddingTop: AppSettings.Layout.defaultSpacing, paddingLeft: AppSettings.Layout.defaultSpacing)
         
         addSubview(filterBar)
         filterBar.delegate = self
@@ -114,14 +130,25 @@ class ProfileControllerHeader:UICollectionReusableView{
     }
     
     func configureWithUser(){
-        userImageView.sd_setImage(with: user?.profileImageURL)
-        userFullnameLabel.text = user?.fullname
+        guard let user = user else {return}
+        let viewModel = ProfileViewModel(user: user)
+        userImageView.sd_setImage(with: viewModel.userProfileImage)
+        userFullnameLabel.text = viewModel.userFullname
+        followOrEditProfileButton.setTitle(viewModel.actionButtonTitle, for: .normal)
+        actionButtonConfiguration = viewModel.actionButtonConfig
+        followesLabel.attributedText = NSAttributedString().attributedTextForPostsAndFollowers(withNumber: "\(viewModel.userFollowers)", andText: "followers")
+        followingLabel.attributedText = NSAttributedString().attributedTextForPostsAndFollowers(withNumber: "\(viewModel.userFollowing)", andText: "following")
     }
 
 //MARK: - Selectors
     
     @objc func editProfileTapped(){
-        print("DEBUG: EDDIT PROFILE IN HEADER")
+        switch actionButtonConfiguration {
+        case .followAndUnfollow:
+            delegate?.followOrUnfollowPressed()
+        case .editProfile:
+            delegate?.editProfilePressed()
+        }
     }
 }
 

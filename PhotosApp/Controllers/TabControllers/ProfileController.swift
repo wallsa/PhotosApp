@@ -8,13 +8,17 @@
 import UIKit
 import Firebase
 
-private let reuseIdentifier = "Cell"
-private let headerIdentifier = "Header"
+fileprivate let reuseIdentifier = "Cell"
+fileprivate let headerIdentifier = "Header"
 
 class ProfileController: UICollectionViewController {
 //MARK: - Properties
     
-    private var user:User
+    private var user:User{
+        didSet{
+            collectionView.reloadData()
+        }
+    }
     
 //MARK: - Lifecycle
     
@@ -30,19 +34,34 @@ class ProfileController: UICollectionViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureCollectionView()
+        checkIfUserIfFollow()
+        fetchUserStats()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchUser()
+        fetchUserStats()
     }
     
 //MARK: - API
     
-    func fetchUser(){
-        guard let uid = Auth.auth().currentUser?.uid else {return}
+    func fetchUser(forUid uid:String){
         UserService.fetchUser(forUID: uid) { user in
             self.user = user
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func checkIfUserIfFollow(){
+        UserService.checkIfUserIsFollowed(uid: user.uid) { isFollowing in
+            self.user.isFollowed = isFollowing
+            self.collectionView.reloadData()
+        }
+    }
+    
+    func fetchUserStats(){
+        UserService.fetchUserStats(withUid: user.uid) { stats in
+            self.user.userStats = stats
         }
     }
     
@@ -78,6 +97,7 @@ extension ProfileController{
     override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerIdentifier, for: indexPath) as! ProfileControllerHeader
         header.user = user
+        header.delegate = self
         return header
     }
 }
@@ -94,5 +114,27 @@ extension ProfileController:UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: AppSettings.Layout.defaultSpacing, left: AppSettings.Layout.defaultSpacing, bottom: AppSettings.Layout.defaultSpacing, right: AppSettings.Layout.defaultSpacing)
+    }
+}
+//MARK: - Profile Header Delegate
+
+extension ProfileController:ProfileHeaderDelegate{
+    func followOrUnfollowPressed() {
+        if user.isFollowed{
+            UserService.unfollowUser(uid: user.uid) { error , dataref in
+                self.user.isFollowed = false
+                self.collectionView.reloadData()
+            }
+        }else {
+            UserService.followUser(uid: user.uid) { error , dataref in
+                self.user.isFollowed = true
+                self.collectionView.reloadData()
+                //Implementar notificação para o usuario
+            }
+        }
+    }
+    
+    func editProfilePressed() {
+        print("DEBUG: EDIT PROFILE IN CONTROLLER")
     }
 }

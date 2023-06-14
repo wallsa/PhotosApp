@@ -156,6 +156,7 @@ class SignupController:UIViewController{
             if let authError = authError{
                 let alert = UIAlertController().createSimpleAlert(title: "Error", message: authError.localizedDescription)
                 self.present(alert, animated: true)
+                self.showHUD(false)
                 return
             }
             

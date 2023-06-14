@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 
 struct User{
     
@@ -14,6 +15,11 @@ struct User{
     var profileImageURL:URL?
     let uid:String
     let username:String
+    var userStats:UserStats?
+    
+    var isFollowed:Bool = false
+    
+    var isCurrentUser:Bool{return Auth.auth().currentUser?.uid == uid}
     
     init(userdictionary:[String:Any]) {
         self.email = userdictionary["email"] as? String ?? ""
@@ -27,4 +33,9 @@ struct User{
             }
         }
     }
+}
+
+struct UserStats {
+    var followers:Int
+    var following:Int
 }
