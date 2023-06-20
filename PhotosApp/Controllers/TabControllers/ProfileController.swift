@@ -123,12 +123,11 @@ extension ProfileController:ProfileHeaderDelegate{
         if user.isFollowed{
             UserService.unfollowUser(uid: user.uid) { error , dataref in
                 self.user.isFollowed = false
-                self.collectionView.reloadData()
+               
             }
         }else {
             UserService.followUser(uid: user.uid) { error , dataref in
                 self.user.isFollowed = true
-                self.collectionView.reloadData()
                 //Implementar notificação para o usuario
             }
         }
@@ -136,5 +135,18 @@ extension ProfileController:ProfileHeaderDelegate{
     
     func editProfilePressed() {
         print("DEBUG: EDIT PROFILE IN CONTROLLER")
+    }
+    
+    func followersPressed() {
+        let profileStatus = UserStatusController()
+    
+        navigationController?.pushViewController(profileStatus, animated: true)
+    }
+    
+    func followingPressed() {
+        let profileStatus = UserStatusController()
+        
+        navigationController?.pushViewController(profileStatus, animated: true)
+        profileStatus.header.animateUnderlineForSecondCell()
     }
 }

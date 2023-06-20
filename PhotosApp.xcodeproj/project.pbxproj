@@ -27,6 +27,9 @@
 		E12E46032A29645C00BA8B1F /* ProfileFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12E46022A29645C00BA8B1F /* ProfileFilterCell.swift */; };
 		E12E46082A2EABA000BA8B1F /* SearchProfilesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E12E46072A2EABA000BA8B1F /* SearchProfilesCell.swift */; };
 		E146A86D2A33CBAE00FFF51E /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E146A86C2A33CBAE00FFF51E /* ProfileViewModel.swift */; };
+		E146A86F2A411EC700FFF51E /* UserStatusController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E146A86E2A411EC700FFF51E /* UserStatusController.swift */; };
+		E146A8722A424C7D00FFF51E /* ProfileStatusFilterHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E146A8712A424C7D00FFF51E /* ProfileStatusFilterHeaderView.swift */; };
+		E146A8742A424F1200FFF51E /* ProfileStatusFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E146A8732A424F1200FFF51E /* ProfileStatusFilterCell.swift */; };
 		E1D652C02A1D933100E3A283 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652BF2A1D933100E3A283 /* MainTabController.swift */; };
 		E1D652C22A1EB8B200E3A283 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652C12A1EB8B200E3A283 /* UserService.swift */; };
 		E1D652C42A1EB9DE00E3A283 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1D652C32A1EB9DE00E3A283 /* User.swift */; };
@@ -65,6 +68,9 @@
 		E12E46022A29645C00BA8B1F /* ProfileFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFilterCell.swift; sourceTree = "<group>"; };
 		E12E46072A2EABA000BA8B1F /* SearchProfilesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchProfilesCell.swift; sourceTree = "<group>"; };
 		E146A86C2A33CBAE00FFF51E /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		E146A86E2A411EC700FFF51E /* UserStatusController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatusController.swift; sourceTree = "<group>"; };
+		E146A8712A424C7D00FFF51E /* ProfileStatusFilterHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatusFilterHeaderView.swift; sourceTree = "<group>"; };
+		E146A8732A424F1200FFF51E /* ProfileStatusFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatusFilterCell.swift; sourceTree = "<group>"; };
 		E1D652BF2A1D933100E3A283 /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		E1D652C12A1EB8B200E3A283 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		E1D652C32A1EB9DE00E3A283 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -145,6 +151,7 @@
 		E120F1BA29CB38FC004DF9C6 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E146A86E2A411EC700FFF51E /* UserStatusController.swift */,
 				E1D652D02A1EDB6300E3A283 /* SideMenu */,
 				E1D652C52A1EBF8E00E3A283 /* TabControllers */,
 				E120F1D129CB9CB4004DF9C6 /* Authentication */,
@@ -233,6 +240,7 @@
 				E12E46022A29645C00BA8B1F /* ProfileFilterCell.swift */,
 				E12E46002A295FE800BA8B1F /* ProfileFilterHeaderView.swift */,
 				E1D652D52A2572C800E3A283 /* ProfileControllerHeader.swift */,
+				E146A8702A424AF000FFF51E /* ProfileStatusView */,
 			);
 			path = ProfileControllerViews;
 			sourceTree = "<group>";
@@ -259,6 +267,15 @@
 				E146A86C2A33CBAE00FFF51E /* ProfileViewModel.swift */,
 			);
 			path = User;
+			sourceTree = "<group>";
+		};
+		E146A8702A424AF000FFF51E /* ProfileStatusView */ = {
+			isa = PBXGroup;
+			children = (
+				E146A8712A424C7D00FFF51E /* ProfileStatusFilterHeaderView.swift */,
+				E146A8732A424F1200FFF51E /* ProfileStatusFilterCell.swift */,
+			);
+			path = ProfileStatusView;
 			sourceTree = "<group>";
 		};
 		E16A05A329F0ABA80013BB7B /* Authentication */ = {
@@ -410,16 +427,19 @@
 				E1D652D22A1EDB7B00E3A283 /* SideMenuController.swift in Sources */,
 				E120F1C329CB3A61004DF9C6 /* Constraints.swift in Sources */,
 				E1D652CD2A1EC50900E3A283 /* NotificationsController.swift in Sources */,
+				E146A8742A424F1200FFF51E /* ProfileStatusFilterCell.swift in Sources */,
 				E120F1C729CB3A9A004DF9C6 /* Extensions.swift in Sources */,
 				E1D652C02A1D933100E3A283 /* MainTabController.swift in Sources */,
 				E1D652C72A1EC49200E3A283 /* HomeViewController.swift in Sources */,
 				E120F1C129CB3A18004DF9C6 /* SplashViewController.swift in Sources */,
 				E1D652C42A1EB9DE00E3A283 /* User.swift in Sources */,
+				E146A86F2A411EC700FFF51E /* UserStatusController.swift in Sources */,
 				E120F1D829D250A2004DF9C6 /* AuthService.swift in Sources */,
 				E1D652C92A1EC4C800E3A283 /* SearchController.swift in Sources */,
 				E120F1D029CB9CB0004DF9C6 /* SignupController.swift in Sources */,
 				E120F1DA29D250F4004DF9C6 /* AuthCredentials.swift in Sources */,
 				E120F1A729CB38CF004DF9C6 /* AppDelegate.swift in Sources */,
+				E146A8722A424C7D00FFF51E /* ProfileStatusFilterHeaderView.swift in Sources */,
 				E12E46082A2EABA000BA8B1F /* SearchProfilesCell.swift in Sources */,
 				E12E46032A29645C00BA8B1F /* ProfileFilterCell.swift in Sources */,
 				E146A86D2A33CBAE00FFF51E /* ProfileViewModel.swift in Sources */,

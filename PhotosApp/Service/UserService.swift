@@ -42,6 +42,28 @@ struct UserService{
         }
     }
     
+    static func fetchFollowers(completion:@escaping ([User]) -> ()){
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        var followers = [User]()
+        USERS_FOLLOWERS.child(currentUID).observe(.childAdded) { datasnap in
+            guard let dictionary = datasnap.value as? [String:Any] else {return}
+            let follower = User(userdictionary: dictionary)
+            followers.append(follower)
+            completion(followers)
+        }
+    }
+    
+    static func fetchFollowings(completion:@escaping ([User]) -> ()){
+        guard let currentUID = Auth.auth().currentUser?.uid else {return}
+        var followings = [User]()
+        USERS_FOLLOWING.child(currentUID).observe(.childAdded) { datasnap in
+            guard let dictionary = datasnap.value as? [String:Any] else {return}
+            let following = User(userdictionary: dictionary)
+            followings.append(following)
+            completion(followings)
+        }
+    }
+    
     static func followUser(uid:String, completion:@escaping(DatabaseCompletion)){
         guard let currentUID = Auth.auth().currentUser?.uid else {return}
         

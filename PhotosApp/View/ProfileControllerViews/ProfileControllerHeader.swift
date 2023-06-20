@@ -19,6 +19,9 @@ enum ProfileHeadeActionButtonConfig{
 protocol ProfileHeaderDelegate:AnyObject{
     func followOrUnfollowPressed()
     func editProfilePressed()
+    func followersPressed()
+    func followingPressed()
+    
 }
 
 class ProfileControllerHeader:UICollectionReusableView{
@@ -61,21 +64,21 @@ class ProfileControllerHeader:UICollectionReusableView{
         return label
     }()
     
-    private let followesLabel:UILabel = {
+    private lazy var followersLabel:UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        let attributedText = NSAttributedString().attributedTextForPostsAndFollowers(withNumber: "12", andText: "followers")
-        label.attributedText = attributedText
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self , action: #selector(followersLabelTap)))
         return label
     }()
     
-    private let followingLabel:UILabel = {
+    private lazy var followingLabel:UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
         label.textAlignment = .center
-        let attributedText = NSAttributedString().attributedTextForPostsAndFollowers(withNumber: "12", andText: "following")
-        label.attributedText = attributedText
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(UITapGestureRecognizer(target: self , action: #selector(followingLabelTap)))
         return label
     }()
     
@@ -109,7 +112,7 @@ class ProfileControllerHeader:UICollectionReusableView{
         addSubview(userImageView)
         userImageView.anchor(top: topAnchor, left: leftAnchor, paddingTop: AppSettings.Layout.defaultSpacing, paddingLeft: AppSettings.Layout.defaultSpacing)
         
-        let stack = UIStackView(arrangedSubviews: [postsLabel, followesLabel, followingLabel])
+        let stack = UIStackView(arrangedSubviews: [postsLabel, followersLabel, followingLabel])
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         
@@ -136,7 +139,7 @@ class ProfileControllerHeader:UICollectionReusableView{
         userFullnameLabel.text = viewModel.userFullname
         followOrEditProfileButton.setTitle(viewModel.actionButtonTitle, for: .normal)
         actionButtonConfiguration = viewModel.actionButtonConfig
-        followesLabel.attributedText = NSAttributedString().attributedTextForPostsAndFollowers(withNumber: "\(viewModel.userFollowers)", andText: "followers")
+        followersLabel.attributedText = NSAttributedString().attributedTextForPostsAndFollowers(withNumber: "\(viewModel.userFollowers)", andText: "followers")
         followingLabel.attributedText = NSAttributedString().attributedTextForPostsAndFollowers(withNumber: "\(viewModel.userFollowing)", andText: "following")
     }
 
@@ -149,6 +152,14 @@ class ProfileControllerHeader:UICollectionReusableView{
         case .editProfile:
             delegate?.editProfilePressed()
         }
+    }
+    
+    @objc func followingLabelTap(){
+        delegate?.followingPressed()
+    }
+    
+    @objc func followersLabelTap(){
+        delegate?.followersPressed()
     }
 }
 
